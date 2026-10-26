@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- SECURITY FIX (audit 2026-10-26): cleartext is denied by default. HTTP
+         browsing now relies on the HTTPS-Only upgrade in SecurityGuardEngine;
+         a site that cannot be upgraded is blocked instead of loading over HTTP. -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+    <domain-config cleartextTrafficPermitted="false">
+        <!-- AdBlock Filter List Repositories -->
+        <domain includeSubdomains="true">easylist.to</domain>
+        <domain includeSubdomains="true">pgl.yoyo.org</domain>
+        <domain includeSubdomains="true">github.com</domain>
+        <domain includeSubdomains="true">raw.githubusercontent.com</domain>
+        <!-- Global Authentication, Search & Cloud Infrastructure -->
+        <domain includeSubdomains="true">google.com</domain>
+        <domain includeSubdomains="true">accounts.google.com</domain>
+        <domain includeSubdomains="true">googleapis.com</domain>
+        <domain includeSubdomains="true">gstatic.com</domain>
+        <domain includeSubdomains="true">duckduckgo.com</domain>
+        <domain includeSubdomains="true">cloudflare.com</domain>
+        <domain includeSubdomains="true">microsoft.com</domain>
+        <domain includeSubdomains="true">apple.com</domain>
+        <!-- Payment Gateways & Financial Domains -->
+        <domain includeSubdomains="true">midtrans.com</domain>
+        <domain includeSubdomains="true">xendit.co</domain>
+        <domain includeSubdomains="true">doku.com</domain>
+        <domain includeSubdomains="true">stripe.com</domain>
+        <domain includeSubdomains="true">paypal.com</domain>
+        <domain includeSubdomains="true">bca.co.id</domain>
+        <domain includeSubdomains="true">klikbca.com</domain>
+        <domain includeSubdomains="true">bankmandiri.co.id</domain>
+        <domain includeSubdomains="true">bri.co.id</domain>
+        <domain includeSubdomains="true">bni.co.id</domain>
+        <domain includeSubdomains="true">bsi.co.id</domain>
+        <domain includeSubdomains="true">cimbniaga.co.id</domain>
+        <domain includeSubdomains="true">dana.id</domain>
+        <domain includeSubdomains="true">ovo.id</domain>
+        <domain includeSubdomains="true">gopay.co.id</domain>
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>

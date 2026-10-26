@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-cache-path name="ext_camera_temp" path="camera" />
+    <cache-path name="int_camera_temp" path="camera" />
+    <cache-path name="int_uploads_temp" path="uploads" />
+    <external-path name="external_downloads" path="Download" />
+    <external-path name="external_downloads_alt" path="downloads" />
+    <external-files-path name="app_external_downloads" path="Download" />
+    <external-files-path name="app_external_downloads_alt" path="downloads" />
+    <files-path name="internal_downloads" path="downloads" />
+    <files-path name="internal_downloads_alt" path="Download" />
+</paths>

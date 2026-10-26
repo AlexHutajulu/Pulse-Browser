@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="alex-primary-title alex-primary-desc">
+  <title id="alex-primary-title">Alex Browser Singularity icon</title>
+  <desc id="alex-primary-desc">A dark event horizon wrapped by an electric-blue and violet accretion disk.</desc>
+  <defs>
+    <radialGradient id="alex-primary-background" cx="50%" cy="42%" r="74%">
+      <stop offset="0%" stop-color="#10182B"/>
+      <stop offset="58%" stop-color="#080D19"/>
+      <stop offset="100%" stop-color="#030409"/>
+    </radialGradient>
+    <radialGradient id="alex-primary-horizon" cx="43%" cy="36%" r="68%">
+      <stop offset="0%" stop-color="#030409"/>
+      <stop offset="72%" stop-color="#010205"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+    <linearGradient id="alex-primary-rear-blue" x1="178" y1="420" x2="862" y2="480" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7046FF" stop-opacity=".3"/>
+      <stop offset="42%" stop-color="#428BFF" stop-opacity=".78"/>
+      <stop offset="76%" stop-color="#72B7FF"/>
+      <stop offset="100%" stop-color="#428BFF" stop-opacity=".38"/>
+    </linearGradient>
+    <linearGradient id="alex-primary-front-blue" x1="150" y1="620" x2="862" y2="570" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7046FF" stop-opacity=".58"/>
+      <stop offset="28%" stop-color="#428BFF" stop-opacity=".92"/>
+      <stop offset="58%" stop-color="#72B7FF"/>
+      <stop offset="76%" stop-color="#428BFF"/>
+      <stop offset="100%" stop-color="#7046FF" stop-opacity=".48"/>
+    </linearGradient>
+    <linearGradient id="alex-primary-violet" x1="214" y1="690" x2="836" y2="510" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7046FF" stop-opacity=".2"/>
+      <stop offset="42%" stop-color="#7046FF"/>
+      <stop offset="74%" stop-color="#B4A0FF" stop-opacity=".86"/>
+      <stop offset="100%" stop-color="#7046FF" stop-opacity=".16"/>
+    </linearGradient>
+    <linearGradient id="alex-primary-rim" x1="303" y1="382" x2="755" y2="626" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7046FF" stop-opacity="0"/>
+      <stop offset="48%" stop-color="#428BFF" stop-opacity=".38"/>
+      <stop offset="100%" stop-color="#72B7FF" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="alex-primary-glow" x="-35%" y="-50%" width="170%" height="200%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="31"/>
+    </filter>
+    <filter id="alex-primary-soft" x="-20%" y="-30%" width="140%" height="160%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="11"/>
+    </filter>
+  </defs>
+  <g id="Background / Obsidian" inkscape:label="Background / Obsidian">
+    <rect width="1024" height="1024" fill="url(#alex-primary-background)"/>
+    <ellipse cx="512" cy="508" rx="356" ry="322" fill="none" stroke="#111B32" stroke-opacity=".42" stroke-width="2"/>
+  </g>
+  <g id="Alex Browser / Singularity" inkscape:label="Alex Browser / Singularity">
+    <g transform="rotate(-14 512 512)">
+      <g id="Lighting / Controlled Glow" inkscape:label="Lighting / Controlled Glow">
+        <ellipse cx="512" cy="520" rx="326" ry="150" fill="none" stroke="#428BFF" stroke-opacity=".34" stroke-width="48" filter="url(#alex-primary-glow)"/>
+        <path d="M181 547C291 369 584 288 843 458" fill="none" stroke="#7046FF" stroke-opacity=".24" stroke-width="52" stroke-linecap="round" filter="url(#alex-primary-soft)"/>
+      </g>
+      <g id="Accretion Disk / Violet Layer" inkscape:label="Accretion Disk / Violet Layer">
+        <path d="M171 536C278 369 552 286 834 439C756 372 619 339 484 354C340 370 225 440 171 536Z" fill="url(#alex-primary-violet)" opacity=".88"/>
+        <path d="M178 551C289 360 589 286 854 463C785 407 673 370 554 369C387 367 244 441 178 551Z" fill="url(#alex-primary-rear-blue)"/>
+        <path d="M225 514C332 393 546 350 756 431" fill="none" stroke="#B4A0FF" stroke-opacity=".34" stroke-width="6" stroke-linecap="round"/>
+      </g>
+      <g id="Singularity / Event Horizon" inkscape:label="Singularity / Event Horizon">
+        <ellipse cx="512" cy="505" rx="213" ry="196" fill="url(#alex-primary-horizon)"/>
+        <ellipse cx="512" cy="505" rx="219" ry="202" fill="none" stroke="url(#alex-primary-rim)" stroke-width="10"/>
+        <ellipse cx="512" cy="505" rx="194" ry="179" fill="#000000" fill-opacity=".76"/>
+      </g>
+      <g id="Accretion Disk / Main Blue" inkscape:label="Accretion Disk / Main Blue">
+        <path d="M156 548C284 682 594 767 866 570C791 694 583 767 381 720C265 693 184 629 156 548Z" fill="url(#alex-primary-front-blue)"/>
+        <path d="M183 574C338 700 608 742 838 588C746 679 581 719 417 691C310 673 226 631 183 574Z" fill="#72B7FF" fill-opacity=".2"/>
+        <path d="M206 596C360 701 596 723 805 607" fill="none" stroke="#7046FF" stroke-opacity=".76" stroke-width="16" stroke-linecap="round"/>
+      </g>
+      <g id="Lighting / Edge Highlights" inkscape:label="Lighting / Edge Highlights">
+        <path d="M271 635C395 704 578 714 728 654" fill="none" stroke="#E8F1FF" stroke-opacity=".84" stroke-width="7" stroke-linecap="round"/>
+        <path d="M694 397C754 412 808 439 843 470" fill="none" stroke="#E8F1FF" stroke-opacity=".62" stroke-width="6" stroke-linecap="round"/>
+        <path d="M239 472C282 422 344 388 413 369" fill="none" stroke="#B4A0FF" stroke-opacity=".5" stroke-width="4" stroke-linecap="round"/>
+      </g>
+    </g>
+  </g>
+</svg>

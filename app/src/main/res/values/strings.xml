@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">AdBlock Browser</string>
+    
+    <!-- Downloads UI & Notifications -->
+    <string name="download_blocked_unsafe">Download blocked: Unsafe URL</string>
+    <string name="download_warning_dangerous_file">⚠ Peringatan: File ini mungkin berbahaya!</string>
+    <string name="download_fast_accelerated">Menggunakan Fast Download (4 Koneksi)</string>
+    <string name="download_range_fallback_normal">Server tidak mendukung Range. Fallback ke Normal Mode.</string>
+    <string name="downloading_file">Downloading file...</string>
+    <string name="download_failed_prefix">Download failed: %1$s</string>
+    
+    <!-- Extensions & Scripts UI -->
+    <string name="extension_tab_private_active">Tab Privat: Aktif</string>
+    <string name="extension_tab_private_inactive">Tab Privat: Nonaktif</string>
+    <string name="extension_pinned">Disematkan ke baris pintasan</string>
+    <string name="extension_unpinned">Dilepas dari baris pintasan</string>
+    <string name="extension_deleted">Ekstensi \'%1$s\' dihapus</string>
+    
+    <!-- Console & Security -->
+    <string name="console_rate_limit_exceeded">Console messages rate limit exceeded (60 msgs/sec). Inspect tools throttling active.</string>
+    <string name="zapper_root_element_blocked">Elemen root/body/html tidak dapat disembunyikan</string>
+    <string name="zapper_invalid_selector">Selector elemen tidak valid</string>
+</resources>

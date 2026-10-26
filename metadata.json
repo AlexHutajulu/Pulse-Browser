@@ -1,0 +1,6 @@
+{
+  "name": "AdBlock Browser",
+  "description": "Premium modern browser optimized for mobile and tablets like Xiaomi Pad 7 Pro, featuring privacy dashboards and robust downloads manager.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
