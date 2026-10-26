@@ -8,11 +8,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
 
-/**
- * Regression tests for the audit fixes of 2026-10-26.
- * Source-text tests follow the existing AdBlockTest pattern: they guard
- * security defaults that must not silently regress in future AI Studio edits.
- */
 class SecurityFixesTest {
 
     private fun findSource(relative: String): File {

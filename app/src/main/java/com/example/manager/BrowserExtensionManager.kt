@@ -570,9 +570,6 @@ object BrowserExtensionManager {
         }
     }
 
-    /**
-     * Parses a Tampermonkey / Greasemonkey `.user.js` or standard `.js` file into a BrowserExtension.
-     */
     fun parseUserScriptOrJs(rawContent: String, fallbackFileName: String = "Custom Extension"): BrowserExtension? {
         val code = rawContent.trim()
         if (code.isBlank()) return null
@@ -646,13 +643,6 @@ object BrowserExtensionManager {
         )
     }
 
-    /**
-     * Builds a hardened `GM_*` compatibility shim for userscripts (`F3-02`):
-     * - Restricts `GM_xmlhttpRequest` to `http:` / `https:` URLs only.
-     * - Blocks all private/loopback/link-local/RFC1918/CGNAT/IPv6-local addresses.
-     * - Requires target host to match either the active page origin or the extension's `matches` scope.
-     * - Forces `credentials: 'omit'`, `cache: 'no-store'`, `redirect: 'error'`, and strips sensitive headers.
-     */
     internal fun buildSafeGmXhrShim(allowedMatches: List<String>): String {
         val cleanMatches = allowedMatches
             .map { normalizeMatchPattern(it) }
@@ -773,9 +763,6 @@ object BrowserExtensionManager {
         """.trimIndent()
     }
 
-    /**
-     * Validates whether a `GM_xmlhttpRequest` target URL is safe and within the extension's host scope (`F3-02`).
-     */
     fun isAllowedGmXhrUrl(
         targetUrl: String,
         pageUrl: String?,
@@ -813,9 +800,6 @@ object BrowserExtensionManager {
         }
     }
 
-    /**
-     * Parses a `.css` UserStyle file into a BrowserExtension.
-     */
     fun parseCssExtension(rawCss: String, fallbackFileName: String = "Custom Style"): BrowserExtension? {
         val css = rawCss.trim()
         if (css.isBlank()) return null
@@ -845,9 +829,6 @@ object BrowserExtensionManager {
         )
     }
 
-    /**
-     * Parses a Chrome/WebExtension `manifest.json` along with optional map of file contents from a ZIP archive.
-     */
     fun parseWebExtensionManifestJson(
         manifestJsonStr: String,
         bundledFiles: Map<String, String> = emptyMap()
@@ -954,10 +935,6 @@ object BrowserExtensionManager {
     private const val MAX_TOTAL_ARCHIVE_BYTES = 4_500_000
     private const val MAX_RAW_EXTENSION_BYTES = 2_000_000
 
-    /**
-     * Normalizes and validates a ZIP archive entry path, returning null if it contains
-     * directory traversal (`..`), null bytes, control characters, or invalid segments.
-     */
     internal fun sanitizeZipEntryName(rawName: String): String? {
         if (rawName.isBlank() || rawName.contains('\u0000')) return null
         val normalized = rawName.replace('\\', '/').trim()
@@ -971,10 +948,6 @@ object BrowserExtensionManager {
         return segments.joinToString("/")
     }
 
-    /**
-     * Validates that a remote extension URL uses HTTPS exclusively and does not target
-     * loopback, RFC 1918 private networks, link-local / cloud metadata, or IPv6 local ranges.
-     */
     internal fun isSafeRemoteExtensionUrl(url: String, resolveDns: Boolean = false): Boolean {
         val trimmed = url.trim()
         return try {
@@ -1024,9 +997,6 @@ object BrowserExtensionManager {
         }?.value
     }
 
-    /**
-     * Imports an external file selected via Android Document Picker (`.js`, `.user.js`, `.css`, `.json`, `.zip`).
-     */
     suspend fun importExtensionFromUri(context: Context, uri: Uri, displayName: String): List<BrowserExtension> =
         withContext(Dispatchers.IO) {
             val lowerName = displayName.lowercase(Locale.US)
@@ -1107,10 +1077,6 @@ object BrowserExtensionManager {
             }
         }
 
-    /**
-     * Downloads and parses an extension from an external HTTPS URL (`.user.js`, `.js`, `.css`, `.json`).
-     * Enforces HTTPS-only, SSRF private-subnet blocking, safe redirect validation, and payload size bounds.
-     */
     suspend fun importExtensionFromUrl(urlStr: String): Result<List<BrowserExtension>> =
         withContext(Dispatchers.IO) {
             try {
@@ -1253,12 +1219,6 @@ object BrowserExtensionManager {
         }
     }
 
-    /**
-     * Enforces safe defaults for newly imported external extensions (`F3-01`):
-     * - External extensions (`EXTERNAL_FILE` / `EXTERNAL_URL`) are disabled on import (`isEnabled = false`)
-     *   so the user must review the target host scope (`matches`) before enabling automatic execution.
-     * - External extensions are never auto-enabled in Private/Incognito tabs (`allowInPrivate = false`).
-     */
     internal fun enforceExternalImportSafety(ext: BrowserExtension): BrowserExtension {
         if (ext.sourceType == ExtensionSourceType.BUILT_IN) return ext
         val isExternalImport = ext.sourceType == ExtensionSourceType.EXTERNAL_FILE ||
@@ -1328,12 +1288,6 @@ object BrowserExtensionManager {
         }
     }
 
-    /**
-     * Checks whether automatic extension injection (`DOCUMENT_START` / `DOCUMENT_END`) is permitted
-     * for the given `extension` and `url`.
-     * - Blocks automatic execution on critical banking/payment/SSO/CAPTCHA hosts.
-     * - Blocks automatic execution in Private/Incognito tabs unless `extension.allowInPrivate` is explicitly true (`F3-01`).
-     */
     fun canAutoInjectExtensionOnUrl(
         extension: BrowserExtension,
         url: String?,
@@ -1346,9 +1300,6 @@ object BrowserExtensionManager {
         return true
     }
 
-    /**
-     * Injects all enabled extensions matching `url` and `stage` (`DOCUMENT_START` or `DOCUMENT_END`).
-     */
     fun injectMatchingExtensions(
         webView: WebView?,
         url: String?,
@@ -1367,9 +1318,6 @@ object BrowserExtensionManager {
         }
     }
 
-    /**
-     * Executes a single BrowserExtension (injecting its CSS and/or JS) into the active WebView.
-     */
     fun executeExtensionInWebView(
         webView: WebView?,
         extension: BrowserExtension,

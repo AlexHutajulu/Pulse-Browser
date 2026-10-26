@@ -15,13 +15,6 @@ class DatabaseKeyUnavailableException(
     cause: Throwable? = null
 ) : IllegalStateException(message, cause)
 
-/**
- * Secure Room Database with SQLCipher encryption.
- *
- * AUDIT FIX: CWE-313 - Cleartext Storage in Database
- * Severity: CRITICAL
- * Provides AES256 encrypted storage for history, bookmarks, and downloads using SQLCipher.
- */
 @Database(entities = [HistoryItem::class, BookmarkItem::class, DownloadItem::class], version = 2, exportSchema = false)
 abstract class AppDatabaseEncrypted : RoomDatabase() {
     abstract fun historyDao(): HistoryDao
@@ -57,10 +50,6 @@ abstract class AppDatabaseEncrypted : RoomDatabase() {
             }
         }
 
-        /**
-         * Get or create encrypted database instance
-         * Uses SQLCipher SupportOpenHelperFactory for 256-bit AES database encryption.
-         */
         fun getDatabase(context: Context): AppDatabaseEncrypted {
             return INSTANCE ?: synchronized(this) {
                 INSTANCE ?: try {
@@ -96,10 +85,6 @@ abstract class AppDatabaseEncrypted : RoomDatabase() {
             }
         }
 
-        /**
-         * Retrieve existing database passphrase or generate one ONLY when no encrypted database file exists yet.
-         * Never overwrites or generates a new passphrase if `alex_browser_database_encrypted` already exists on disk.
-         */
         fun getDatabasePassphrase(
             context: Context,
             encryptedDbExistsOverride: Boolean? = null

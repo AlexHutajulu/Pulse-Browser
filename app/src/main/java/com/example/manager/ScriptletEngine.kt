@@ -2,30 +2,6 @@ package com.example.manager
 
 import java.util.Locale
 
-/**
- * Mesin scriptlet untuk browser ini — bagian dari mesin aturan.
- *
- * AbpRuleEngine memarsing semua aturan `##+js(...)` dan
- * `#%#//scriptlet(...)`. Sekarang aturan itu diparsing (bukan dibuang) dan
- * diubah menjadi pemanggilan ke pustaka JS di
- * `app/src/main/assets/adblock/scriptlet_library.js`
- * (`window.__browserScriptlets`), yang diinjeksikan di awal halaman oleh
- * AdBlockWebViewClient.
- *
- * Mengikuti spesifikasi scriptlet uBlock/AdGuard, hanya untuk subset
- * yang aman dan teruji:
- *
- *   set-constant, abort-on-property-read, abort-on-property-write,
- *   prevent-setTimeout, prevent-setInterval
- *
- * Aturan di luar whitelist di atas tetap diparsing tapi TIDAK dieksekusi
- * (supaya daftar filter tidak diam-diam menjalankan scriptlet asing).
- * Scriptlet TIDAK PERNAH dijalankan untuk host SAFE, whitelist, atau
- * critical-bypass — pemfilteran itu dilakukan di AdBlockWebViewClient
- * sebelum injeksi, bukan di sini.
- *
- * Pure Kotlin, tanpa dependensi Android — bisa diuji di JVM lokal.
- */
 object ScriptletEngine {
 
     const val MAX_SCRIPTLET_RULES = 5_000
@@ -33,7 +9,7 @@ object ScriptletEngine {
     const val MAX_SCRIPTLET_NAME_LENGTH = 64
     const val MAX_SCRIPTLET_ARG_LENGTH = 300
 
-    /** Nama scriptlet yang benar-benar diimplementasikan di scriptlet_library.js. */
+    
     val SUPPORTED_SCRIPTLETS = setOf(
         "set-constant",
         "abort-on-property-read",
@@ -43,7 +19,7 @@ object ScriptletEngine {
     )
 
     data class ScriptletRule(
-        /** Domain kosong = berlaku global (aturan tanpa prefix domain). */
+        
         val domains: Set<String>,
         val name: String,
         val args: List<String>,
@@ -61,7 +37,7 @@ object ScriptletEngine {
     }
 
     class ScriptletRuleSet(val rules: List<ScriptletRule>) {
-        /** Scriptlet yang berlaku untuk host ini, setelah exception dikurangkan. */
+        
         fun scriptletsFor(host: String): List<ScriptletRule> {
             if (rules.isEmpty()) return emptyList()
             val blocked = HashSet<String>()
@@ -82,14 +58,7 @@ object ScriptletEngine {
         }
     }
 
-    /**
-     * Parsing satu baris filter menjadi ScriptletRule, atau null kalau
-     * bukan aturan scriptlet / tidak valid. Mendukung:
-     *  - `example.com##+js(set-constant, foo, true)`
-     *  - `example.com#@#+js(set-constant, foo, true)` (exception)
-     *  - `example.com#%#//scriptlet('set-constant', 'foo', 'true')`
-     *  - `##+js(...)` global (tanpa domain)
-     */
+    
     fun parseScriptletRule(line: String): ScriptletRule? {
         val trimmed = line.trim()
         if (trimmed.isEmpty() || trimmed.length > AbpRuleEngine.MAX_RULE_LINE_LENGTH) return null
@@ -152,10 +121,7 @@ object ScriptletEngine {
         return name.all { it.isLetterOrDigit() || it == '-' || it == '_' }
     }
 
-    /**
-     * Pisah argumen dengan menghormati tanda kutip tunggal/ganda dan
-     * backslash escape. Mengembalikan null kalau kutip tidak berpasangan.
-     */
+    
     fun splitArgs(input: String): List<String>? {
         val out = ArrayList<String>()
         val current = StringBuilder()
@@ -195,7 +161,7 @@ object ScriptletEngine {
             }
     }
 
-    /** Escape satu string Kotlin menjadi literal string JSON yang aman disisipkan ke JS. */
+    
     fun jsonEscape(value: String): String {
         val sb = StringBuilder()
         for (ch in value) {
@@ -214,12 +180,7 @@ object ScriptletEngine {
         return sb.toString()
     }
 
-    /**
-     * Bangun JS pemanggilan scriptlet untuk host ini. Mengembalikan "" kalau
-     * tidak ada scriptlet yang berlaku. Pustaka `window.__browserScriptlets`
-     * HARUS sudah diinjeksikan lebih dulu (di early script); kalau belum,
-     * pemanggilan ini aman karena dijaga `typeof` di JS-nya.
-     */
+    
     fun buildInvocationJs(host: String, ruleSet: ScriptletRuleSet): String {
         val matched = ruleSet.scriptletsFor(host)
         if (matched.isEmpty()) return ""

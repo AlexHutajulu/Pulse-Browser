@@ -917,8 +917,6 @@ fun BrowserScreen(
             }
         }
 
-
-
         // Mobile Full-Screen Chrome Overlays (Only when in Mobile DisplayMode; Desktop Mode uses its own structured Sidebar)
         if (!isTablet && displayMode != DisplayMode.DESKTOP) {
             if (showTabsDialog) {
@@ -1066,9 +1064,6 @@ private fun ChromePermissionBadge(
     }
 }
 
-/**
- * Authentic Google Chrome "Find in page" top bar
- */
 @Composable
 fun ChromeFindInPageBar(
     query: String,
@@ -1170,11 +1165,6 @@ private fun safeDestroyWebView(webView: android.webkit.WebView) {
     } catch (_: Throwable) {}
 }
 
-/**
- * Unified Chrome Bottom Navigation & Collapsible Shortcut Dock for one-handed mobile browsing.
- * Integrates the Shortcut Bar (Auto Putar, Ekstensi, Toolbar JS) directly into the bottom bar
- * with 1-tap open/close and top/bottom position switching.
- */
 @Composable
 private fun ChromeMobileBottomBar(
     viewModel: BrowserViewModel,
@@ -1353,9 +1343,6 @@ private fun ChromeMobileBottomBar(
     }
 }
 
-/**
- * Authentic Google Chrome Tab Count Box (`[1]`, `[2]`, etc.)
- */
 @Composable
 fun ChromeTabCountButton(
     count: Int,
@@ -2585,9 +2572,6 @@ fun SidebarHistoryPanel(
     }
 }
 
-/**
- * Authentic Google Chrome Tab Grid Switcher Dialog
- */
 @Composable
 fun MobileTabsDialog(
     viewModel: BrowserViewModel,
@@ -5158,9 +5142,6 @@ private fun ChromeStatTile(
     }
 }
 
-/**
- * Chrome Page Info & Security Hub Dialog (Triggered when tapping the Lock/Tune icon in Omnibox)
- */
 @Composable
 fun SecurityDashboardDialog(
     onDismiss: () -> Unit,

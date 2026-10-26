@@ -19,24 +19,6 @@ import java.security.cert.X509Certificate
 import java.io.ByteArrayInputStream
 import java.util.zip.ZipFile
 
-/**
- * Internal Display & Frame Telemetry Synchronizer.
- * Performs non-destructive runtime integrity diagnostics without forced process termination.
- *
- * AUDIT CLARIFICATION (2026-10-26): despite the "Telemetry" name, this file
- * does NOT send browsing data, metrics, or identifiers to any server. It is
- * a local anti-tamper check (package/signature/runtime environment, e.g.
- * Xposed / Frida / Substrate markers) that only records a local warning flag.
- * The XOR(0x5A)-encoded strings below decode to, in order: the expected
- * applicationId "com.aistudio.alexbrowser.wdjkpq", Xposed bridge/helper
- * class names, Substrate class names, /proc/self/maps markers
- * ("frida", "xposed", "substrate", "lsplant", "sandhook"), known
- * patcher packages, and certificate blacklist keywords
- * ("apkeditor", "luckypatcher", "mtmanager", "npmanager").
- * TODO: rename this file/object to AntiTamperCheck in a future refactor,
- * and replace the XOR encoding with plain constants, to avoid it being
- * mistaken for telemetry in future audits.
- */
 object FrameMetricsTelemetrySync {
 
     private const val TAG = "FrameMetricsSync"
@@ -109,10 +91,6 @@ object FrameMetricsTelemetrySync {
         return String(chars)
     }
 
-    /**
-     * Entry point called during early process init, Activity resume, and WebView creation.
-     * Avoids repeating expensive I/O once token is initialized and never terminates the process.
-     */
     fun syncDisplayFrameState(context: Context): Long {
         if (isUnitTestEnvironment()) {
             isIntegrityVerified = true
@@ -157,9 +135,6 @@ object FrameMetricsTelemetrySync {
         return fp.contains("robolectric")
     }
 
-    /**
-     * Layer 1: Checks package name and installer origin without blocking on Split APK / AAB structures.
-     */
     private fun verifyPackageAndManifestLock(context: Context): Boolean {
         return try {
             val expectedPkg = d(EXPECTED_PKG)
@@ -194,10 +169,6 @@ object FrameMetricsTelemetrySync {
         }
     }
 
-    /**
-     * Layer 2: Verifies APK signing certificate integrity, enforces key rotation trust model,
-     * and detects repackaged patcher certificates without permanently bricking across key changes.
-     */
     internal fun verifyBinaryAndSignatureIntegrity(context: Context): Boolean {
         return try {
             val pm = context.packageManager
@@ -299,10 +270,6 @@ object FrameMetricsTelemetrySync {
             .joinToString("") { "%02x".format(it) }
     }
 
-    /**
-     * Layer 3: Detects active hook frameworks in classloader and stack frames without
-     * penalizing OEM Dual-Apps / Work Profiles.
-     */
     private fun verifyRuntimeEnvironmentClean(context: Context): Boolean {
         return try {
             val hookClasses = arrayOf(d(CLS_A), d(CLS_B), d(CLS_C))
@@ -347,17 +314,10 @@ object FrameMetricsTelemetrySync {
         }
     }
 
-    /**
-     * Retained as a safe no-op entry point so callers do not spawn background port-probing threads
-     * that could cause false positives on legitimate user devices.
-     */
     fun verifyNativeTransportAsync() {
         // Intentional no-op: background local socket probing disabled to prevent false positives.
     }
 
-    /**
-     * Probes each candidate port independently and invokes [onPortDetected] without killing the process.
-     */
     internal fun checkSuspiciousPorts(
         ports: IntArray,
         host: String = "127.0.0.1",
@@ -380,9 +340,6 @@ object FrameMetricsTelemetrySync {
         }
     }
 
-    /**
-     * Records a controlled, diagnosable integrity warning without terminating the application process.
-     */
     internal fun recordIntegrityWarning(reason: String) {
         isIntegrityVerified = false
         lastIntegrityWarning = reason
@@ -394,9 +351,6 @@ object FrameMetricsTelemetrySync {
     }
 }
 
-/**
- * Early-boot ContentProvider that initializes FrameMetricsTelemetrySync non-destructively.
- */
 class RenderConfigProvider : ContentProvider() {
     override fun onCreate(): Boolean {
         val ctx = context

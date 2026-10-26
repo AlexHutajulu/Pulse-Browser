@@ -45,7 +45,6 @@ data class BrowserTab(
     val isSuspended: Boolean = false
 )
 
-
 class BrowserViewModel(application: Application) : AndroidViewModel(application) {
     private val TAG = "BrowserViewModel"
 
@@ -1425,9 +1424,6 @@ class BrowserViewModel(application: Application) : AndroidViewModel(application)
         setDisplayMode(if (isTablet) DisplayMode.DESKTOP else DisplayMode.MOBILE)
     }
 
-    /**
-     * Clears only WebView HTTP/disk cache without deleting user login cookies, DOM storage, or open tabs.
-     */
     fun clearBrowserCacheOnly(context: Context) {
         try {
             val tempWebView = android.webkit.WebView(context)
@@ -1439,10 +1435,6 @@ class BrowserViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    /**
-     * Clears browser cache, cookies, and DOM storage (`WebStorage`).
-     * Does NOT close open tabs unless [closeTabs] is explicitly `true`.
-     */
     fun clearCacheAndCookies(context: Context, closeTabs: Boolean = false) {
         try {
             val tempWebView = android.webkit.WebView(context)

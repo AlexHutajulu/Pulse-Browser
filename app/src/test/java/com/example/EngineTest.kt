@@ -6,10 +6,6 @@ import com.yourbrowser.adblock.HeuristicsEngine
 import org.junit.Assert.*
 import org.junit.Test
 
-/**
- * Pengujian mesin (pure JVM, tanpa Android).
- * Menjalankan: ./gradlew :app:testDebugUnitTest --tests "com.example.EngineTest"
- */
 class EngineTest {
 
     @Test

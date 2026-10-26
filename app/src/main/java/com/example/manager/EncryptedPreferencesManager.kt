@@ -6,21 +6,6 @@ import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 
-/**
- * Secure wrapper for SharedPreferences with AES256-GCM encryption.
- * All sensitive data (permissions, settings, scripts) are encrypted at rest using Android Keystore.
- *
- * SECURITY FIX (audit 2026-10-26): the old fallback to application-private
- * SharedPreferences was removed. A plaintext file would have stored the
- * SQLCipher passphrase and site permissions in the clear, defeating database
- * encryption. If the Keystore is unavailable, preferences now live only in
- * memory for the lifetime of the process: nothing sensitive is written to
- * disk, and legacy files are NOT migrated or cleared in that case.
- *
- * AUDIT FIX: Replaces plaintext SharedPreferences
- * Issue: CWE-312 - Cleartext Storage of Sensitive Information
- * Severity: CRITICAL
- */
 object EncryptedPreferencesManager {
     private const val TAG = "EncryptedPreferencesManager"
     private const val PREFS_NAME = "encrypted_browser_prefs"
@@ -28,12 +13,6 @@ object EncryptedPreferencesManager {
     @Volatile
     private var prefsInstance: SharedPreferences? = null
     
-    /**
-     * Get or initialize preferences. Uses EncryptedSharedPreferences with AES256-GCM
-     * via Android Keystore. On Keystore failure, returns an in-memory store
-     * (never a plaintext file) and skips legacy migration, so no persisted
-     * data is lost or exposed.
-     */
     fun getPreferences(context: Context): SharedPreferences {
         return prefsInstance ?: synchronized(this) {
             prefsInstance ?: run {
@@ -64,11 +43,6 @@ object EncryptedPreferencesManager {
         }
     }
 
-    /**
-     * Minimal in-memory SharedPreferences. Used only when encrypted storage
-     * is unavailable, so sensitive values are never written to disk in clear.
-     * Data lives only for the lifetime of the process.
-     */
     private class InMemorySharedPreferences : SharedPreferences {
         private val data = java.util.concurrent.ConcurrentHashMap<String, Any?>()
         private val listeners = java.util.concurrent.CopyOnWriteArraySet<SharedPreferences.OnSharedPreferenceChangeListener>()

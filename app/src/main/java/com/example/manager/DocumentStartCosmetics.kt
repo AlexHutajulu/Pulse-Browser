@@ -4,10 +4,6 @@ import android.webkit.WebView
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
 
-/**
- * Injects cosmetic element hiding rules at DOCUMENT_START using WebViewCompat.
- * Ensures zero-layout-shift and stops ad banners before initial paint.
- */
 object DocumentStartCosmetics {
 
     private const val SCRIPT = """

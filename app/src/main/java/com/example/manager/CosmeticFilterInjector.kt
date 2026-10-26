@@ -4,10 +4,6 @@ import android.util.Base64
 import android.util.Log
 import android.webkit.WebView
 
-/**
- * Upgraded Bug-Free Cosmetic Filter Injector (V2).
- * Safely hides explicit ad containers without breaking site layouts, buttons, modals, or SPAs.
- */
 object CosmeticFilterInjector {
 
     private const val TAG = "CosmeticFilter"

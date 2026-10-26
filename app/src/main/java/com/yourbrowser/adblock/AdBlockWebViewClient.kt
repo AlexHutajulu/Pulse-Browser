@@ -710,9 +710,6 @@ class AdBlockWebViewClient(
             "googleads.g.doubleclick.net"
         )
 
-        /**
-         * SAFE_DOMAINS — tidak pernah diblok dalam kondisi apapun.
-         */
         private val SAFE_DOMAINS = setOf(
             "google.com", "google.co.id", "google.co.uk", "google.de", "google.fr",
             "google.co.jp", "googleapis.com", "gstatic.com", "googleusercontent.com",
@@ -748,7 +745,6 @@ class AdBlockWebViewClient(
             "web.whatsapp.com"
         )
 
-        /** Domain iklan — diblok semua mode */
         private val AD_DOMAINS = setOf(
             "doubleclick.net", "googleadservices.com", "googlesyndication.com",
             "adservice.google.com",
@@ -773,7 +769,6 @@ class AdBlockWebViewClient(
             "woclin.com", "shorte.st", "adf.ly", "ouo.io"
         )
 
-        /** Tracker — diblok semua mode */
         private val TRACKER_DOMAINS = setOf(
             "hotjar.com", "clarity.ms", "mixpanel.com",
             "amplitude.com", "segment.com", "segment.io",
@@ -786,7 +781,6 @@ class AdBlockWebViewClient(
             "static.ads-twitter.com"
         )
 
-        /** Domain iklan ekstra untuk mode Aggressive */
         private val AGGRESSIVE_DOMAINS = setOf(
             "amazon-adsystem.com", "adsystem.amazon.com",
             "advertising.com", "everesttech.net",

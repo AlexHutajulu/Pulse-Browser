@@ -25,10 +25,6 @@ class PermissionManager(private val context: Context) {
     companion object {
         internal const val KEY_PREFIX = "site_perm_v2_"
 
-        /**
-         * Normalizes a URL or origin string into a canonical `scheme://host[:port]` origin.
-         * Rejects dangerous/internal schemes (`file:`, `content:`, `javascript:`, `data:`, `about:`, etc.).
-         */
         fun normalizePermissionOrigin(url: String?): String? {
             if (url.isNullOrBlank()) return null
             val trimmed = url.trim()
@@ -52,11 +48,6 @@ class PermissionManager(private val context: Context) {
             }
         }
 
-        /**
-         * Enforces W3C Secure Contexts requirement for sensitive site permissions:
-         * Camera, Microphone, Geolocation, Protected Media, MIDI, and Notifications
-         * require `https://` or loopback (`http://localhost`, `http://127.0.0.1`, `http://[::1]`).
-         */
         fun isOriginEligibleForPermission(url: String?, type: SitePermissionType): Boolean {
             val normalized = normalizePermissionOrigin(url) ?: return false
             if (normalized.startsWith("https://")) return true

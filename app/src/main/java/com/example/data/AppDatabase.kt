@@ -159,10 +159,6 @@ abstract class AppDatabase : RoomDatabase() {
             ).build()
         }
 
-        /**
-         * Synchronously and transactionally migrates records from `alex_browser_database` into `encryptedDb`.
-         * Never deletes the legacy database unless all records have been committed and verified in a single transaction.
-         */
         internal fun migrateLegacyPlaintextDatabaseSync(appContext: Context, encryptedDb: AppDatabase): Boolean {
             if (EncryptedPreferencesManager.getBoolean(appContext, KEY_SQLCIPHER_MIGRATED, false)) return true
             val legacyFile = appContext.getDatabasePath(LEGACY_DB_NAME)
@@ -211,11 +207,6 @@ abstract class AppDatabase : RoomDatabase() {
         private fun androidx.sqlite.db.SupportSQLiteOpenHelper.ReadableDatabaseCompat(): SupportSQLiteDatabase =
             this.writableDatabase
 
-        /**
-         * Copies history, bookmarks, and non-incognito downloads from [sourceDb] into [targetDb]
-         * inside a single atomic transaction on [targetDb], verifying row counts before committing.
-         * If any operation fails, the transaction rolls back and returns `false` (or throws), preserving [sourceDb].
-         */
         internal fun migrateDatabaseContentsTransactionally(
             sourceDb: SupportSQLiteDatabase,
             targetDb: SupportSQLiteDatabase

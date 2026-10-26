@@ -18,15 +18,6 @@ import java.net.InetAddress
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
-/**
- * Mengelola download dan parsing filter list dari sumber publik.
- * Format yang didukung: Adblock Plus / uBlock Origin (.txt)
- *
- * Filter lists yang dipakai:
- * - EasyList: rules iklan utama (banner, popup, overlay)
- * - EasyPrivacy: tracker dan analytics
- * - Peter Lowe's Ad and tracking server list: domain blocklist tambahan
- */
 object FilterListManager {
 
     private const val TAG = "FilterListManager"
@@ -61,10 +52,6 @@ object FilterListManager {
     private var cachedRules: ParsedRules? = null
     private val loadMutex = Mutex()
 
-    /**
-     * Memvalidasi bahwa URL filter list menggunakan skema HTTPS dan tidak mengarah
-     * ke jaringan internal/privat/loopback (anti-SSRF & anti-downgrade).
-     */
     internal fun isSafeFilterListUrl(
         urlStr: String,
         resolveDns: Boolean = true
@@ -167,10 +154,6 @@ object FilterListManager {
         return out.toString(Charsets.UTF_8.name())
     }
 
-    /**
-     * Load rules — dari cache file jika masih valid, atau download ulang.
-     * Thread-safe dengan Mutex agar tidak terjadi duplikasi download/parsing paralel.
-     */
     suspend fun loadRules(context: Context): ParsedRules = withContext(Dispatchers.IO) {
         cachedRules?.let { return@withContext it }
         loadMutex.withLock {
@@ -328,9 +311,6 @@ object FilterListManager {
         }
     }
 
-    /**
-     * Parse Adblock Plus / uBlock Origin format via AbpRuleEngine.
-     */
     internal fun parseRules(raw: String): ParsedRules {
         val ruleSet = AbpRuleEngine.build(raw.lineSequence())
         val blockDomains = HashSet<String>(ruleSet.domainOnlyBlock.keys)

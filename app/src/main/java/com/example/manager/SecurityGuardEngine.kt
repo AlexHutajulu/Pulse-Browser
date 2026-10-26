@@ -23,12 +23,6 @@ data class SecurityThreatAssessment(
     val recommendation: String = ""
 )
 
-/**
- * Multi-layer Security Engine protecting users from:
- * 1. Unencrypted HTTP connections (HTTPS-Only automatic upgrade + warning).
- * 2. Phishing, homograph IDN spoofing (xn--), fake banking/login domains, and scam sites.
- * 3. Unauthorized Camera, Microphone, Clipboard hijacking, and reverse-tabnabbing popups.
- */
 object SecurityGuardEngine {
 
     private const val PREFS_NAME = "chrome_security_guard_prefs"
@@ -207,10 +201,6 @@ object SecurityGuardEngine {
         return saved.contains(clean)
     }
 
-    /**
-     * Checks whether a domain belongs to a critical banking, payment, SSO/OAuth, or CAPTCHA authority
-     * where automatic third-party extensions and auto-run user scripts must not auto-inject.
-     */
     fun isCriticalProtectedHost(hostOrUrl: String?): Boolean {
         if (hostOrUrl.isNullOrBlank()) return false
         val trimmed = hostOrUrl.trim()
@@ -219,10 +209,6 @@ object SecurityGuardEngine {
         return CRITICAL_PROTECTED_DOMAINS.any { host == it || host.endsWith(".$it") }
     }
 
-    /**
-     * Automatically upgrades HTTP URLs to HTTPS when HTTPS-Only mode is active,
-     * excluding localhost and local network addresses.
-     */
     fun upgradeUrlIfHttpsOnly(url: String, httpsOnlyEnabled: Boolean): String {
         val trimmed = url.trim()
         if (!httpsOnlyEnabled || !trimmed.startsWith("http://", ignoreCase = true)) {
@@ -236,9 +222,6 @@ object SecurityGuardEngine {
         return "https://" + trimmed.substring(7)
     }
 
-    /**
-     * Evaluates a target URL for phishing, brand spoofing, homograph attacks, malware, or insecure HTTP.
-     */
     fun inspectUrlThreat(
         url: String,
         httpsOnlyEnabled: Boolean,
@@ -329,10 +312,6 @@ object SecurityGuardEngine {
         return SecurityThreatAssessment(url, host, ThreatSeverity.SAFE)
     }
 
-    /**
-     * Checks whether [host] is strictly equal to [officialDomain] or a valid dot-separated subdomain of it.
-     * Prevents substring suffix bypasses such as `evilbca.co.id` or `klikbca-bca.co.id`.
-     */
     fun isSameOrSubdomainOf(host: String, officialDomain: String): Boolean {
         val cleanHost = normalizeHost(host).removeSurrounding("[", "]")
         val cleanOfficial = normalizeHost(officialDomain).removeSurrounding("[", "]")
@@ -361,12 +340,6 @@ object SecurityGuardEngine {
         "shopee", "shopeepay", "tokopedia", "bukalapak", "blibli", "traveloka"
     )
 
-    /**
-     * Evaluates whether a hostname containing Punycode (`xn--`) or non-ASCII characters
-     * exhibits IDN homograph spoofing characteristics (mixed-script labels, Cyrillic/Greek
-     * lookalike substitution, or protected brand skeleton impersonation) without blindly
-     * blocking legitimate internationalized domains (e.g. `xn--mnchen-3ya.de`).
-     */
     fun isSuspiciousIdnHomograph(host: String): Boolean {
         val clean = normalizeHost(host).removeSurrounding("[", "]")
         if (clean.isEmpty()) return false
@@ -445,12 +418,6 @@ object SecurityGuardEngine {
         return false
     }
 
-    /**
-     * Builds the client-side DOM & API hardening script injected on page load:
-     * - Protects clipboard from background reading or silent hijacking without a fresh user click.
-     * - Prevents reverse-tabnabbing (`window.opener = null`).
-     * - Blocks unprompted vibration spam (`navigator.vibrate`) used by fake "virus alert" scam pages.
-     */
     fun buildClientSecurityScript(
         blockClipboardHijack: Boolean,
         blockHiddenPopups: Boolean
@@ -558,22 +525,12 @@ object SecurityGuardEngine {
         "zoom.us"
     )
 
-    /**
-     * Checks whether [host] is an exact match or valid dot-separated subdomain of a known
-     * real-time collaboration / video-conferencing domain that requires unspoofed hardware metrics.
-     * Prevents substring bypasses such as `evil-google.com` or `zoom-tracker.xyz`.
-     */
     fun isAfpBypassDomain(host: String): Boolean {
         val clean = normalizeHost(host)
         if (clean.isEmpty()) return false
         return AFP_BYPASS_DOMAINS.any { domain -> isSameOrSubdomainOf(clean, domain) }
     }
 
-    /**
-     * Builds an ephemeral in-memory `localStorage` and `sessionStorage` polyfill for Private/Incognito
-     * tabs where `WebSettings.domStorageEnabled` is disabled (`false`) to prevent writing persistent
-     * DOM storage to disk while keeping web applications functional in memory during the tab session.
-     */
     fun buildIncognitoStorageIsolationScript(): String = """
         (function() {
             if (window.__asIncognitoStorageIsolated) return;
@@ -617,9 +574,6 @@ object SecurityGuardEngine {
         })();
     """.trimIndent()
 
-    /**
-     * Builds the Anti-Fingerprinting protection script for `onPageStarted` execution.
-     */
     fun buildAntiFingerprintingScript(
         isDesktopMode: Boolean,
         isStrictMode: Boolean
@@ -676,10 +630,6 @@ object SecurityGuardEngine {
         return TRUSTED_REGISTRABLE_DOMAINS.any { isSameOrSubdomainOf(clean, it) }
     }
 
-    /**
-     * Checks if [host] is a valid 4-octet decimal IPv4 literal (e.g. `127.0.0.1`, `10.0.0.1`).
-     * Does NOT match domain names that merely start with digits (such as `10.example.com` or `100.example.com`).
-     */
     fun isIpv4Literal(host: String): Boolean {
         val clean = host.trim().removeSurrounding("[", "]").trimEnd('.')
         val parts = clean.split('.')
@@ -693,20 +643,11 @@ object SecurityGuardEngine {
         return true
     }
 
-    /**
-     * Checks if [host] is an IPv6 literal. Valid DNS hostnames never contain `:`.
-     */
     fun isIpv6Literal(host: String): Boolean {
         val clean = host.trim().removeSurrounding("[", "]")
         return clean.contains(':')
     }
 
-    /**
-     * Checks whether [host] represents a local, loopback, link-local, RFC1918 private, CGNAT,
-     * non-standard integer/hex/octal IP, or IPv6 ULA/local address.
-     * Public domains starting with `fc`, `fd`, `10.`, or `100.` (e.g. `fdroid.org`, `fda.gov`, `100.example.com`)
-     * are properly recognized as public domain names and return `false`.
-     */
     fun isLocalOrPrivateAddress(host: String): Boolean {
         val clean = normalizeHost(host).removeSurrounding("[", "]")
         if (clean.isEmpty()) return false
@@ -789,14 +730,6 @@ object SecurityGuardEngine {
 
     private val VALID_RFC3986_SCHEME_REGEX = Regex("^[a-z][a-z0-9+.-]{0,63}$")
 
-    /**
-     * Validates whether [url] uses an external application deep-link scheme that is eligible
-     * to be routed to the user confirmation dialog (`requestOpenIntent`).
-     * Uses a strict RFC 3986 scheme format check + explicit denylist of dangerous/internal/web schemes
-     * so legitimate payment, banking, e-wallet, and app deep links (e.g. `gopay://`, `ovo://`, `dana://`,
-     * `shopeepay://`, `bca://`, `market://`, `whatsapp://`, `intent://`, `tel:`, `mailto:`) work while
-     * dangerous schemes (`javascript:`, `file:`, `content:`, `data:`, `blob:`, etc.) are blocked.
-     */
     fun isAllowedExternalScheme(url: String?): Boolean {
         if (url.isNullOrBlank()) return false
         val trimmed = url.trim()
@@ -832,14 +765,6 @@ object SecurityGuardEngine {
         return scheme in DANGEROUS_INTERNAL_SCHEMES
     }
 
-    /**
-     * Validates whether a `blob:` URL is safe to use for in-page document preview or download
-     * by verifying that its embedded origin is `https://`, points to a public non-private host,
-     * and strictly matches the origin (`scheme`, `host`, and effective port) of the currently active
-     * HTTPS page in the WebView.
-     *
-     * Note: `blob:` is NEVER allowed as direct user address-bar navigation (`isSafeWebNavigationUrl` returns `false`).
-     */
     fun isSafeBlobUrlForContext(blobUrl: String?, activePageUrl: String?): Boolean {
         if (blobUrl.isNullOrBlank() || activePageUrl.isNullOrBlank()) return false
         val trimmedBlob = blobUrl.trim()
@@ -871,11 +796,6 @@ object SecurityGuardEngine {
         }
     }
 
-    /**
-     * Builds a sanitized external Intent from an untrusted URL or `intent://` URI.
-     * Prevents OWASP MASVS Intent Redirection, arbitrary action execution, internal component hijacking,
-     * self-package targeting, and ContentProvider URI permission leakage.
-     */
     fun buildSafeExternalIntent(context: Context, rawUrl: String): android.content.Intent? {
         val trimmed = rawUrl.trim()
         if (trimmed.isEmpty() || trimmed.length > 2048) return null
@@ -929,10 +849,6 @@ object SecurityGuardEngine {
         }
     }
 
-    /**
-     * Safely extracts and validates `browser_fallback_url` from an `intent://` string or Intent.
-     * Only allows external HTTP(S) URLs and rejects loopback/private network addresses or dangerous schemes.
-     */
     fun extractSafeFallbackUrl(rawUrl: String): String? {
         val trimmed = rawUrl.trim()
         if (!trimmed.startsWith("intent://", ignoreCase = true) || trimmed.length > 2048) return null
@@ -953,10 +869,6 @@ object SecurityGuardEngine {
         }
     }
 
-    /**
-     * Verifies that a URL is strictly a safe HTTP/HTTPS web URL suitable for WebView.loadUrl,
-     * Context Menu navigation, or new-tab opening. Rejects javascript:, file:, content:, data:, blob:, intent:, etc.
-     */
     fun isSafeWebNavigationUrl(url: String?): Boolean {
         if (url.isNullOrBlank()) return false
         val trimmed = url.trim()
@@ -967,11 +879,6 @@ object SecurityGuardEngine {
             trimmed.startsWith("http://", ignoreCase = true)
     }
 
-    /**
-     * Validates URIs returned to WebChromeClient.onShowFileChooser (`mFilePickerLauncher`)
-     * to prevent malicious chooser targets from returning `file://` URIs, encoded traversal paths,
-     * or internal app ContentProvider/storage URIs (`${packageName}.fileprovider`, `/data/user/0/<pkg>`, etc.).
-     */
     fun isSafeFileChooserResultUri(
         context: Context,
         uri: Uri?,
@@ -1022,14 +929,6 @@ object SecurityGuardEngine {
         return true
     }
 
-    /**
-     * Builds the client-side WebRTC IP Leak Protection script:
-     * - When `strictWebRtcMode == true`: completely blocks `RTCPeerConnection` & `webkitRTCPeerConnection`.
-     * - When `strictWebRtcMode == false`: wraps `RTCPeerConnection` & `webkitRTCPeerConnection` to scrub
-     *   private/loopback/link-local IPv4 (`10.x`, `192.168.x`, `172.16-31.x`, `127.x`, `169.254.x`),
-     *   local IPv6 (`fe80:`, `fc00:`/`fd00:`, `::1`), and `typ host` candidates across SDP descriptions,
-     *   `addIceCandidate`, `onicecandidate`, and `addEventListener('icecandidate')`.
-     */
     fun buildWebRtcProtectionScript(
         preventWebRtcLeak: Boolean,
         strictWebRtcMode: Boolean
@@ -1176,5 +1075,4 @@ object SecurityGuardEngine {
     private fun normalizeHost(host: String): String =
         host.trim().lowercase(Locale.US).removeSurrounding("[", "]").trimEnd('.').removePrefix("www.")
 }
-
 

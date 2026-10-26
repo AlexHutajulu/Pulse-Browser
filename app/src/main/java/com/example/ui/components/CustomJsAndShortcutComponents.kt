@@ -81,10 +81,6 @@ fun printOrSaveWebViewAsPdf(context: Context, webView: WebView?, title: String) 
     }
 }
 
-/**
- * Scrollable Chrome Shortcut & Custom JavaScript Toolbar Bar.
- * Can be placed at the TOP (below Omnibox) or BOTTOM of the screen.
- */
 @Composable
 fun ChromeShortcutAndJsBar(
     viewModel: BrowserViewModel,
@@ -430,10 +426,6 @@ private fun ShortcutActionPill(
     }
 }
 
-/**
- * Full-Featured Chrome Material 3 Studio for Custom JavaScript Toolbars,
- * Ready-to-Use JS Templates, JSON Import/Export, and Shortcut Bar Configuration.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomJsStudioDialog(
@@ -924,7 +916,6 @@ fun CustomJsStudioDialog(
                             verticalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
 
-
                             item {
                                 Text(
                                     text = "Pintasan Bawaan di Baris Toolbar",
@@ -1105,9 +1096,6 @@ fun CustomJsStudioDialog(
     }
 }
 
-/**
- * Authentic Google Chrome Safe Browsing / HTTPS-Only Security Interstitial Screen.
- */
 @Composable
 fun ChromeSecurityThreatInterstitial(
     threat: SecurityThreatAssessment,

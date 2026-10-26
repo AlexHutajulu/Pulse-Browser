@@ -32,10 +32,6 @@ import com.example.ui.components.DeveloperAiAttributionSection
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-/**
- * Reusable Alex Browser Singularity Brand Emblem on a dark obsidian squircle tile with glowing accretion aura.
- * Used consistently in SplashScreen and Settings > About.
- */
 @Composable
 fun AdBlockBrandEmblem(
     size: Dp = 96.dp,

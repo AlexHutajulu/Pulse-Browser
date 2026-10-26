@@ -65,10 +65,6 @@ data class CustomToolbarScript(
     val isBuiltInTemplate: Boolean = false
 )
 
-/**
- * Manages Custom JavaScript Toolbar buttons, built-in JS templates, safe IIFE execution,
- * per-site auto-run matching, and JSON import/export.
- */
 object CustomJsToolbarManager {
 
     private const val TAG = "CustomJsToolbarManager"
@@ -641,10 +637,6 @@ object CustomJsToolbarManager {
         }
     }
 
-    /**
-     * Executes a CustomToolbarScript safely inside an isolated IIFE using Base64 decoding
-     * so quotes, newlines, or special characters in user scripts never cause syntax injection errors.
-     */
     fun executeScriptInWebView(
         webView: WebView?,
         script: CustomToolbarScript,
@@ -700,11 +692,6 @@ object CustomJsToolbarManager {
         }
     }
 
-    /**
-     * Checks whether a `CustomToolbarScript` is eligible for automatic execution on `url`.
-     * Enforces `script.isEnabled`, HTTP(S) navigation scheme, and blocks auto-execution on
-     * critical banking/payment/SSO/CAPTCHA hosts.
-     */
     fun canAutoRunScriptOnUrl(script: CustomToolbarScript, url: String?): Boolean {
         if (!script.isEnabled || script.autoRunMode == JsAutoRunMode.MANUAL_ONLY) return false
         if (url.isNullOrBlank() || url == "about:blank") return false
@@ -728,10 +715,6 @@ object CustomJsToolbarManager {
         }
     }
 
-    /**
-     * Automatically runs matching scripts when a page finishes loading.
-     * Never auto-executes scripts inside Private/Incognito tabs (`F3-01`).
-     */
     fun runAutoScriptsForUrl(
         webView: WebView?,
         url: String?,
@@ -824,10 +807,6 @@ object CustomJsToolbarManager {
             .edit().putInt("desktop_zoom_scale_v1", scale.coerceIn(50, 200)).apply()
     }
 
-    /**
-     * Computes physical device tilt quadrant with a 20-degree deadband/hysteresis
-     * around 45/135/225/315 boundaries so holding the device near diagonal angles never flickers.
-     */
     fun computeTiltQuadrantWithHysteresis(
         angleDegrees: Int,
         currentQuadrant: PhysicalTiltQuadrant

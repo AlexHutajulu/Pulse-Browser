@@ -2,10 +2,6 @@ package com.example.manager
 
 import java.util.Locale
 
-/**
- * Pure Kotlin Adblock Plus / uBlock Origin compatible rule matching engine.
- * No Android framework dependencies — fully executable & testable on local JVM.
- */
 object AbpRuleEngine {
 
     const val MAX_RULE_LINE_LENGTH = 2048
@@ -260,14 +256,7 @@ object AbpRuleEngine {
             return null
         }
 
-        /**
-         * Apakah URL ini secara eksplisit diizinkan oleh aturan exception
-         * (@@) ABP? Berbeda dari shouldBlock()==null, yang juga berarti
-         * "tidak ada aturan yang cocok". Dibutuhkan oleh lapisan heuristik
-         *  di AdBlockWebViewClient: exception ABP HARUS menang atas
-         * heuristik, kalau tidak domain yang sengaja di-exception (mis.
-         * untuk login/pembayaran) bisa ikut terblok heuristik.
-         */
+        
         fun matchesAllowRule(
             url: String,
             sourceHost: String,

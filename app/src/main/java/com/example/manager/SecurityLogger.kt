@@ -2,14 +2,6 @@ package com.example.manager
 
 import android.util.Log
 
-/**
- * Centralized security logging manager.
- * Replaces all printStackTrace() and silent exception handlers.
- *
- * AUDIT FIX: CWE-391 - Unchecked Error Condition (33 instances)
- * Severity: CRITICAL
- * Ensures all security events are logged for audit trail
- */
 object SecurityLogger {
     private const val TAG = "SecurityAudit"
     
@@ -39,9 +31,6 @@ object SecurityLogger {
     private val securityEventLog = mutableListOf<SecurityEvent>()
     private const val MAX_LOG_SIZE = 1000
     
-    /**
-     * Log security event with full details and severity
-     */
     fun logSecurityEvent(
         type: EventType,
         component: String,

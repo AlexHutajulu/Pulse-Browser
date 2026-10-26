@@ -27,9 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.R
 
-/**
- * Renders the exact uploaded Google Gemini 2025 logo image asset.
- */
 @Composable
 fun GeminiLogoIcon(
     modifier: Modifier = Modifier.size(20.dp)
@@ -42,9 +39,6 @@ fun GeminiLogoIcon(
     )
 }
 
-/**
- * Renders the exact uploaded Claude AI logo image asset.
- */
 @Composable
 fun ClaudeLogoIcon(
     modifier: Modifier = Modifier.size(20.dp)
@@ -57,9 +51,6 @@ fun ClaudeLogoIcon(
     )
 }
 
-/**
- * Renders the exact uploaded OpenAI / ChatGPT Blossom logo asset.
- */
 @Composable
 fun ChatGptLogoIcon(
     modifier: Modifier = Modifier.size(20.dp)
@@ -72,9 +63,6 @@ fun ChatGptLogoIcon(
     )
 }
 
-/**
- * Modern pill/card badge for a single AI assistant (Gemini, Claude, or ChatGPT).
- */
 @Composable
 fun AiAssistantBadge(
     name: String,
@@ -123,9 +111,6 @@ fun AiAssistantBadge(
     }
 }
 
-/**
- * Reusable Developer + 3 AI Badges attribution component used in SplashScreen and SettingsAboutBanner.
- */
 @Composable
 fun DeveloperAiAttributionSection(
     modifier: Modifier = Modifier,

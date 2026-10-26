@@ -10,9 +10,6 @@ enum class ResourceType {
     MAIN_DOCUMENT, SCRIPT, STYLESHEET, IMAGE, MEDIA, FONT, XHR, IFRAME, OTHER
 }
 
-/**
- * Engine utama AdBlocker.
- */
 object AdBlockEngine {
 
     private const val TAG = "AdBlockEngine"

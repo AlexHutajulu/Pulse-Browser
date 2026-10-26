@@ -236,9 +236,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    /**
-     * Launch official files and media content pickers on behalf of WebView intents securely
-     */
     private fun handleWebViewFileChooser(
         filePathCallback: ValueCallback<Array<Uri>>?,
         fileChooserParams: WebChromeClient.FileChooserParams?

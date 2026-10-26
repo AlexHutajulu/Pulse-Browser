@@ -8,14 +8,6 @@ import androidx.webkit.WebViewFeature
 import com.yourbrowser.adblock.AdBlockWebViewClient
 import com.yourbrowser.adblock.PrivacyMode
 
-/**
- * Intercepts Service Worker background network requests via ServiceWorkerClientCompat.
- * Delegates checks to AdBlockWebViewClient.
- *
- * Catatan teknis & keterbatasan:
- * Daftar putih (whitelist) per-situs belum disinkronkan ke Service Worker client ini
- * karena Service Worker berjalan di luar konteks tab/page URL aktif.
- */
 object AdBlockServiceWorker {
 
     private val adBlockClient = AdBlockWebViewClient(PrivacyMode.BALANCED)

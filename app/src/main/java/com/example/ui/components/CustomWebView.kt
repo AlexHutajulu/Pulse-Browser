@@ -1488,12 +1488,6 @@ private fun isSamePageRedirect(urlA: String, urlB: String): Boolean {
     }
 }
 
-/**
- * SECURITY / COMPAT FIX (audit 2026-10-26): derive the desktop UA from the
- * system WebView UA instead of hard-coding Chrome/124. A frozen 2024 UA
- * breaks site compatibility and makes the browser fingerprintable. The
- * fallback below is only used if the system UA cannot be read.
- */
 private fun desktopUserAgentFromDefault(context: android.content.Context): String {
     return try {
         val defaultUa = android.webkit.WebSettings.getDefaultUserAgent(context)

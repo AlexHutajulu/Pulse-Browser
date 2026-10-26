@@ -2,26 +2,6 @@ package com.yourbrowser.adblock
 
 import java.util.Locale
 
-/**
- * Lapisan heuristik sebagai lapisan TAMBAHAN, bukan pengganti AbpRuleEngine.
- *
- * Daftar domain, kata kunci, dan pola di bawah ini adalah paket aturan
- * heuristik untuk lapisan ini.
- *
- * PENYEMPITAN YANG SENGAJA DIBUAT supaya tidak
- * merusak login/pembayaran/berita berbayar (checklist V4):
- *  - Lapisan ini HANYA dipanggil dari AdBlockWebViewClient.checkRules()
- *    SETELAH pemeriksaan SAFE, whitelist, critical-bypass, dan segmen
- *    streaming, dan SETELAH AbpRuleEngine.
- *  - Kata kunci gambling dan pola path hanya berlaku untuk request
- *    third-party. Domain iklan (suffix match) berlaku apa pun partynya,
- *    karena domain itu memang jaringan iklan, bukan situs yang dikunjungi.
- *  - Pola '/tr/' dan '/ad_status' TIDAK ikut di sini:
- *    '/tr/' terlalu umum (banyak endpoint first-party yang sah memakai
- *    path itu) dan akan memecahkan situs yang sah.
- *
- * Pure Kotlin, tanpa dependensi Android — bisa diuji di JVM lokal.
- */
 object HeuristicsEngine {
 
     private val HEURISTIC_AD_DOMAINS = setOf(
@@ -360,11 +340,7 @@ object HeuristicsEngine {
         "/privacy/mutation"
     )
 
-    /**
-     * @return "heuristic-domain" / "heuristic-gambling" / "heuristic-path", atau null.
-     * [lowerUrl] harus sudah lowercase. [isFirstParty] = request host sama
-     * dengan host halaman (atau subdomainnya).
-     */
+    
     fun heuristicReason(host: String, lowerUrl: String, isFirstParty: Boolean): String? {
         val cleanHost = host.lowercase(Locale.US).trim().trimEnd('.').removePrefix("www.")
         if (cleanHost.isEmpty()) return null
